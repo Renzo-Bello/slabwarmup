@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>Protocolo Calentamiento · SLAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:#0A0A0A;color:#F0EDE8;min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+:root{
+  --gold:#C9A96E;--gold-dim:#8A6D3F;--gold-glow:rgba(201,169,110,0.12);--gold-line:rgba(201,169,110,0.25);
+  --ink:#0A0A0A;--ink2:#141414;--ink3:#1E1E1E;--ink4:#2A2A2A;
+  --text:#F0EDE8;--text2:#B8B4AD;--text3:#6E6A63;
+  --green:#5A9E72;--green-bg:rgba(90,158,114,0.12);
+  --red:#C0514A;--red-bg:rgba(192,81,74,0.12);
+  --amber:#C8881A;--amber-bg:rgba(200,136,26,0.12);
+  --blue:#4A85C8;--blue-bg:rgba(74,133,200,0.12);
+  --r-safe-top:env(safe-area-inset-top,0px);--r-safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
+
+/* HEADER */
+.app-header{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gold-line);padding:calc(12px + var(--r-safe-top)) 20px 12px;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;max-width:480px;margin:0 auto;}
+.header-brand{display:flex;flex-direction:column;gap:1px;}
+.header-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1;}
+.header-badge{font-size:10px;font-weight:500;background:var(--gold-glow);border:1px solid var(--gold-line);color:var(--gold);padding:4px 10px;border-radius:20px;letter-spacing:0.5px;}
+
+/* NAV TABS */
+.nav-tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;background:var(--ink2);border-bottom:1px solid var(--gold-line);padding:0 4px;max-width:100%;}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex-shrink:0;font-family:'Outfit',sans-serif;font-size:12px;font-weight:400;color:var(--text3);padding:12px 14px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;letter-spacing:0.3px;}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:500;}
+.nav-tab:active{opacity:0.7}
+
+/* PANELS */
+.panel{display:none;padding:20px;max-width:480px;margin:0 auto}
+.panel.active{display:block}
+
+/* SECTION LABEL */
+.section-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:14px;}
+
+/* FIELD */
+.field-group{margin-bottom:14px}
+.field-label{display:block;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:7px;}
+.field-select{width:100%;font-family:'Outfit',sans-serif;font-size:14px;font-weight:400;color:var(--text);background:var(--ink3);border:1px solid var(--ink4);border-radius:10px;padding:13px 40px 13px 14px;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color 0.2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%236E6A63' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+.field-select:focus{outline:none;border-color:var(--gold-dim)}
+.field-select option{background:#1E1E1E;color:#F0EDE8}
+
+/* MULTI SELECT CHIPS */
+.chips-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.chip-btn{font-family:'Outfit',sans-serif;font-size:12px;font-weight:400;color:var(--text3);padding:8px 14px;border-radius:20px;border:1px solid var(--ink4);background:none;cursor:pointer;transition:all 0.15s;-webkit-user-select:none;user-select:none;}
+.chip-btn.active{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+.chip-btn.active.hombro{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);}
+.chip-btn:active{opacity:0.7}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#1A1308 0%,#0A0A0A 60%);padding:28px 20px 24px;border-bottom:1px solid var(--gold-line);max-width:480px;margin:0 auto;}
+.hero-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold);display:block;}
+.hero-h{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--text);line-height:1.1;margin-bottom:10px;}
+.hero-h em{color:var(--gold);font-style:italic}
+.hero-p{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:6px;}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-blue{background:var(--blue-bg);color:var(--blue)}
+.badge-gold{background:var(--gold-glow);color:var(--gold)}
+
+/* RESULT CARD */
+.result-card{border:1px solid var(--gold-dim);border-radius:16px;overflow:hidden;margin-top:4px;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.result-top{background:linear-gradient(135deg,#1A1308 0%,#0F0B05 100%);padding:20px;border-bottom:1px solid var(--gold-line);position:relative;overflow:hidden;}
+.result-top::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.08) 0%,transparent 70%);pointer-events:none;}
+.result-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--text);line-height:1.1;}
+.result-sub{font-size:12px;color:var(--gold);margin-top:4px;font-weight:400}
+
+/* ALERTA LESION */
+.alert-box{background:var(--red-bg);border:1px solid var(--red);border-radius:12px;padding:14px;margin-bottom:14px;}
+.alert-box-amber{background:var(--amber-bg);border:1px solid var(--amber);}
+.alert-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.alert-title.red{color:var(--red)}
+.alert-title.amber{color:var(--amber)}
+.alert-body{font-size:12.5px;color:var(--text2);line-height:1.6;}
+
+/* PHASE STEPS */
+.phase-section{margin-bottom:20px;}
+.phase-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.phase-icon{font-size:18px;width:36px;height:36px;background:var(--gold-glow);border:1px solid var(--gold-line);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.phase-title{font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.3px;}
+.phase-sub{font-size:11px;color:var(--text3);}
+.step-list{display:flex;flex-direction:column;gap:8px;}
+.step-item{background:var(--ink2);border:1px solid var(--ink4);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;}
+.step-item.highlight{border-color:var(--gold-dim);}
+.step-item.warning{border-color:var(--amber);background:var(--amber-bg);}
+.step-item.danger{border-color:var(--red);background:var(--red-bg);}
+.step-num{font-size:10px;font-weight:600;color:var(--gold);background:var(--gold-glow);border-radius:6px;padding:3px 7px;flex-shrink:0;margin-top:1px;letter-spacing:0.5px;}
+.step-num.alt{color:var(--text3);background:var(--ink3);}
+.step-content{}
+.step-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;}
+.step-detail{font-size:12px;color:var(--text2);line-height:1.5;}
+.step-time{font-size:10px;font-weight:600;color:var(--gold);margin-top:5px;letter-spacing:0.5px;}
+.step-time.green{color:var(--green)}
+.step-time.amber{color:var(--amber)}
+.step-avoid{font-size:11px;color:var(--red);margin-top:5px;font-weight:500;}
+
+/* DIVIDER */
+.gold-divider{height:1px;background:var(--gold-line);margin:20px 0;}
+.section-divider{height:1px;background:var(--ink4);margin:14px 0;}
+
+/* INFO BANNER */
+.info-banner{background:var(--ink2);border:1px solid var(--ink4);border-radius:12px;padding:14px;margin-top:14px;font-size:12px;color:var(--text3);line-height:1.6;}
+.info-banner strong{color:var(--text2);font-weight:500}
+
+/* TIP BLOCK */
+.tip-block{padding:14px;background:var(--ink2);border-radius:0 0 16px 16px;}
+.tip-inner{border-left:2px solid var(--gold);padding:10px 12px;background:var(--gold-glow);border-radius:0 8px 8px 0;font-size:13px;line-height:1.6;color:var(--text2);}
+.tip-inner strong{color:var(--text);font-weight:500}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--ink3);}
+.faq-item:last-child{border-bottom:none}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0;cursor:pointer;-webkit-user-select:none;user-select:none;}
+.faq-q-text{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;flex:1}
+.faq-icon{color:var(--gold);font-size:18px;flex-shrink:0;font-weight:300;transition:transform 0.2s;}
+.faq-icon.open{transform:rotate(45deg)}
+.faq-a{display:none;font-size:12.5px;color:var(--text2);line-height:1.6;padding:0 0 16px;}
+.faq-a.open{display:block}
+.faq-tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-bottom:8px;}
+.faq-tag.lesion{background:var(--red-bg);color:var(--red)}
+.faq-tag.base{background:var(--gold-glow);color:var(--gold)}
+
+/* COMPARATIVA MUSCULOS */
+.muscle-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.muscle-card{background:var(--ink2);border:1px solid var(--ink4);border-radius:12px;padding:14px;cursor:pointer;transition:border-color 0.2s;}
+.muscle-card.active{border-color:var(--gold-dim);}
+.muscle-card:active{opacity:0.8}
+.muscle-emoji{font-size:24px;margin-bottom:6px;}
+.muscle-name{font-size:12px;font-weight:500;color:var(--text);}
+.muscle-sub{font-size:10px;color:var(--text3);margin-top:2px;}
+
+/* TIMER */
+.timer-card{background:var(--ink2);border:1px solid var(--gold-dim);border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;}
+.timer-display{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--gold);line-height:1;margin:10px 0;}
+.timer-label{font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+.timer-step-name{font-size:14px;font-weight:500;color:var(--text);margin:8px 0 4px;}
+.timer-btns{display:flex;gap:8px;justify-content:center;margin-top:14px;}
+.timer-btn{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:10px 20px;border-radius:20px;border:none;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
+.timer-btn.primary{background:var(--gold);color:var(--ink);}
+.timer-btn.secondary{background:var(--ink3);color:var(--text2);border:1px solid var(--ink4);}
+.timer-btn:active{opacity:0.8}
+.timer-progress{height:3px;background:var(--ink4);border-radius:2px;overflow:hidden;margin-top:12px;}
+.timer-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 1s linear;}
+.timer-queue{display:flex;flex-direction:column;gap:6px;margin-top:14px;}
+.timer-queue-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--ink3);border-radius:8px;}
+.timer-queue-item.current{background:var(--gold-glow);border:1px solid var(--gold-line);}
+.tqi-name{font-size:12px;color:var(--text2);flex:1;}
+.tqi-name.current{color:var(--text);font-weight:500;}
+.tqi-time{font-size:11px;color:var(--text3);}
+.tqi-time.current{color:var(--gold);}
+.tqi-dot{width:6px;height:6px;border-radius:50%;background:var(--ink4);flex-shrink:0;}
+.tqi-dot.current{background:var(--gold);}
+.tqi-dot.done{background:var(--green);}
+
+/* SAFE BOTTOM */
+.safe-bottom{height:calc(20px + var(--r-safe-bottom))}
+
+/* RESPONSIVE */
+@media(min-width:480px){
+  .app-header,.panel,.hero{max-width:480px;margin-left:auto;margin-right:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="header-eyebrow">SLAB | RENZO BELLO</span>
+      <span class="header-title">Calentamiento</span>
+    </div>
+    <span class="header-badge">@reennzolifts</span>
+  </div>
+</header>
+
+<div style="background:#0A0A0A;">
+  <div class="hero">
+    <div class="hero-eyebrow">SLAB | ASESORIAS PERSONALIZADAS</div>
+    <h1 class="hero-h">Calienta <em>bien</em>,<br>entrena mejor</h1>
+    <p class="hero-p">Protocolo de calentamiento y elongación adaptado a tu grupo muscular, nivel y limitaciones físicas. Hecho para todos — principiantes y lesionados incluidos.</p>
+  </div>
+</div>
+
+<div style="position:sticky;top:57px;z-index:99;background:var(--ink2);">
+  <nav class="nav-tabs" role="tablist">
+    <button class="nav-tab active" onclick="switchTab('selector',this)">Selector</button>
+    <button class="nav-tab" onclick="switchTab('timer',this)">Temporizador</button>
+    <button class="nav-tab" onclick="switchTab('elongacion',this)">Elongación</button>
+    <button class="nav-tab" onclick="switchTab('lesiones',this)">Lesiones</button>
+    <button class="nav-tab" onclick="switchTab('faq',this)">FAQ</button>
+  </nav>
+</div>
+
+<!-- ═══════════════════════ PANEL: SELECTOR ═══════════════════════ -->
+<section class="panel active" id="panel-selector" role="tabpanel">
+  <div class="section-label">Tu sesión de hoy</div>
+
+  <div class="field-group">
+    <label class="field-label" for="sel-musculo">Grupo muscular a entrenar</label>
+    <select class="field-select" id="sel-musculo" onchange="buildWarmup()">
+      <option value="pecho_hombro">Pecho + Hombro</option>
+      <option value="espalda">Espalda</option>
+      <option value="biceps_triceps">Bíceps + Tríceps (brazo completo)</option>
+      <option value="piernas">Piernas completas</option>
+      <option value="full">Full body</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="sel-nivel">Tu nivel</label>
+    <select class="field-select" id="sel-nivel" onchange="buildWarmup()">
+      <option value="principiante">Principiante — nuevo en el gym</option>
+      <option value="intermedio">Intermedio — entreno hace varios meses</option>
+      <option value="avanzado">Avanzado — más de 2 años entrenando</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Limitaciones / zonas con dolor</label>
+    <div class="chips-wrap" id="chips-limitaciones">
+      <button class="chip-btn hombro" onclick="toggleLimitacion(this,'hombro')">🟡 Hombro</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'muneca')">🔴 Muñeca</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'espalda_baja')">🔴 Espalda baja</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'rodilla')">🔴 Rodilla</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'cuello')">🟡 Cuello</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'cadera')">🟡 Cadera</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'codo')">🟡 Codo</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'tobillo')">🔴 Tobillo</button>
+      <button class="chip-btn" onclick="toggleLimitacion(this,'ninguna')">✅ Sin limitaciones</button>
+    </div>
+  </div>
+
+  <div id="result-warmup"></div>
+  <div class="safe-bottom"></div>
+</section>
+
+<!-- ═══════════════════════ PANEL: TIMER ═══════════════════════ -->
+<section class="panel" id="panel-timer" role="tabpanel">
+  <div class="section-label">Temporizador guiado</div>
+  <div class="timer-card">
+    <div class="timer-label" id="timer-phase-label">Selecciona un grupo muscular</div>
+    <div class="timer-step-name" id="timer-step-name">—</div>
+    <div class="timer-display" id="timer-display">0:00</div>
+    <div class="timer-progress"><div class="timer-progress-fill" id="timer-progress-fill" style="width:100%"></div></div>
+    <div class="timer-btns">
+      <button class="timer-btn secondary" id="btn-prev" onclick="timerPrev()">← Anterior</button>
+      <button class="timer-btn primary" id="btn-start" onclick="timerToggle()">▶ Iniciar</button>
+      <button class="timer-btn secondary" id="btn-next" onclick="timerNext()">Siguiente →</button>
+    </div>
+  </div>
+  <div class="section-label" style="margin-top:4px">Cola de ejercicios</div>
+  <div class="timer-queue" id="timer-queue"></div>
+  <div class="info-banner" style="margin-top:14px">
+    <strong>Tip:</strong> Puedes avanzar o retroceder manualmente. El temporizador se reinicia al cambiar de ejercicio. Selecciona tu grupo muscular en el <span style="color:var(--gold);cursor:pointer" onclick="goToSelector()">Selector</span> para cargar los ejercicios.
+  </div>
+  <div class="safe-bottom"></div>
+</section>
+
+<!-- ═══════════════════════ PANEL: ELONGACIÓN ═══════════════════════ -->
+<section class="panel" id="panel-elongacion" role="tabpanel">
+  <div class="section-label">Elongación post-entrenamiento</div>
+  <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;">La elongación post-entreno es clave para la recuperación, movilidad a largo plazo y prevención de lesiones. Mantén cada posición <strong style="color:var(--text)">30-45 segundos</strong> sin rebotes.</p>
+
+  <div id="elon-content">
+    <!-- Se llena con JS -->
+  </div>
+  <div class="safe-bottom"></div>
+</section>
+
+<!-- ═══════════════════════ PANEL: LESIONES ═══════════════════════ -->
+<section class="panel" id="panel-lesiones" role="tabpanel">
+  <div class="section-label">Guía de lesiones comunes</div>
+  <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;">Si tienes dolor en alguna zona, aquí encuentras qué hacer, qué evitar y cómo adaptar tu calentamiento. Ante dolor agudo o persistente, consulta a un profesional.</p>
+
+  <div id="lesion-cards"></div>
+  <div class="safe-bottom"></div>
+</section>
+
+<!-- ═══════════════════════ PANEL: FAQ ═══════════════════════ -->
+<section class="panel" id="panel-faq" role="tabpanel">
+  <div class="section-label">Preguntas frecuentes</div>
+  <div id="faq-list"></div>
+  <div class="safe-bottom"></div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+
+const WARMUP_DATA = {
+  pecho_hombro:{
+    nombre:'Pecho + Hombro',
+    emoji:'💪',
+    duracion:'10-14 min',
+    descripcion:'El hombro es la articulación más compleja del cuerpo. Un calentamiento bien hecho aquí reduce drásticamente el riesgo de impingement y lesiones del manguito rotador.',
+    fases:[
+      {
+        titulo:'Activación cardiovascular',
+        subtitulo:'Elevar temperatura corporal',
+        icono:'🔥',
+        duracion:'3 min',
+        pasos:[
+          {nombre:'Trote suave o salto de soga',detalle:'3 minutos a ritmo bajo. No es cardio intenso, solo elevar la temperatura corporal y comenzar la circulación. Respira con calma.',tiempo:'3 min',highlight:false},
+        ]
+      },
+      {
+        titulo:'Movilidad de hombros',
+        subtitulo:'La parte más crítica para pecho/hombro',
+        icono:'🔄',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Círculos de brazos (hacia adelante)',detalle:'Brazos extendidos, círculos amplios y lentos. Siente la articulación ir calentando. Empieza pequeño y agranda el círculo progresivamente.',tiempo:'30 seg',highlight:true},
+          {nombre:'Círculos de brazos (hacia atrás)',detalle:'Mismo movimiento en sentido contrario. Especialmente importante para abrir el pecho y activar los rotadores externos.',tiempo:'30 seg',highlight:true},
+          {nombre:'Rotación interna y externa de hombro',detalle:'Codo a 90°, antebrazo paralelo al suelo. Rota el hombro hacia adentro y afuera. Lento, controlado, sin dolor. Si duele, detente.',tiempo:'30 seg/lado',highlight:false},
+          {nombre:'Apertura de pecho (brazos atrás)',detalle:'Entrelaza los dedos detrás de la espalda, empuja el pecho hacia afuera y lleva los brazos hacia atrás. Mantén 5 segundos, repite.',tiempo:'45 seg',highlight:false},
+          {nombre:'Dislocaciones con banda o palo',detalle:'Agarra el palo/banda con agarre amplio, llévalo desde adelante del cuerpo hacia atrás por encima de la cabeza. Lento. Si hay tensión en el hombro, amplía el agarre.',tiempo:'10 reps',highlight:true},
+        ]
+      },
+      {
+        titulo:'Activación neuromuscular',
+        subtitulo:'Despertar los músculos objetivo',
+        icono:'⚡',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Flexiones de rodilla (push-ups modificados)',detalle:'Apoya rodillas en el suelo. Baja lento (3 seg), sube rápido. El objetivo NO es fatiga, sino activar el patrón de empuje.',tiempo:'10-15 reps',highlight:false},
+          {nombre:'Face pulls con banda liviana',detalle:'Banda a altura de cara, tira hacia la cara abriendo los codos. Activa el manguito rotador y los deltoides posteriores. Esencial antes de press.',tiempo:'15 reps',highlight:true},
+          {nombre:'Press con barra vacía o mancuernas livianas',detalle:'50-60% de tu primer set de trabajo. Control total, rango completo. 2 series. Esto es el puente entre calentamiento y trabajo real.',tiempo:'2 x 10 reps',highlight:false},
+        ]
+      }
+    ],
+    limitaciones:{
+      hombro:[
+        {tipo:'warning',texto:'⚠️ HOMBRO SENSIBLE: omite las dislocaciones y los círculos amplios al inicio. Comienza con pequeños círculos y amplía solo si no hay dolor. Evita trabajo por encima de la cabeza si hay dolor agudo.'},
+        {tipo:'danger',texto:'🚫 Evita: press militar, elevaciones laterales con mucho peso, cualquier ejercicio que reproduzca el dolor. Prioriza la rotación externa liviana.'},
+      ],
+      muneca:[
+        {tipo:'warning',texto:'⚠️ MUÑECA SENSIBLE: en push-ups, usa puños cerrados sobre el suelo para reducir la extensión de muñeca. Considera vendas o muñequeras elásticas para el entrenamiento.'},
+      ]
+    }
+  },
+  espalda:{
+    nombre:'Espalda',
+    emoji:'🦾',
+    duracion:'10-13 min',
+    descripcion:'La espalda incluye músculos que van desde el cuello hasta la zona lumbar. El calentamiento debe cubrir toda la cadena posterior y activar el core antes de cualquier jalón o peso muerto.',
+    fases:[
+      {
+        titulo:'Activación cardiovascular',
+        subtitulo:'Elevar temperatura corporal',
+        icono:'🔥',
+        duracion:'3 min',
+        pasos:[
+          {nombre:'Trote suave o máquina de remo liviana',detalle:'3 minutos a ritmo bajo. La remo es ideal porque ya activa la cadena posterior que vas a trabajar.',tiempo:'3 min',highlight:false},
+        ]
+      },
+      {
+        titulo:'Movilidad de columna y cadera',
+        subtitulo:'Fundamental antes de jalones y remos',
+        icono:'🔄',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Cat-Cow (gato-vaca)',detalle:'En cuatro patas, alterna entre arrodondear la espalda hacia el techo (gato) y dejarla caer hacia abajo (vaca). Lento, con respiración. Es el ejercicio más completo para movilidad espinal.',tiempo:'10 reps',highlight:true},
+          {nombre:'Bird-Dog',detalle:'En cuatro patas, extiende el brazo derecho y la pierna izquierda simultáneamente. Mantén 3 segundos, vuelve. Activa core y estabilizadores lumbares.',tiempo:'8 reps/lado',highlight:true},
+          {nombre:'Rotación torácica sentado',detalle:'Sentado en el suelo con piernas cruzadas, manos detrás de la cabeza. Rota el torso de lado a lado. La columna torácica es la que más se limita en el entrenamiento de espalda.',tiempo:'10 reps/lado',highlight:false},
+          {nombre:'Good morning sin peso',detalle:'De pie, manos detrás de la cabeza, pies a ancho de caderas. Bisagra de cadera hacia adelante con espalda neutra. Activa isquios y prepara el patrón de jalón.',tiempo:'10 reps',highlight:false},
+        ]
+      },
+      {
+        titulo:'Activación de espalda',
+        subtitulo:'Despertar los músculos objetivo',
+        icono:'⚡',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Jalones con banda liviana',detalle:'Banda desde arriba, simula el jalón al pecho. Enfócate en iniciar con los codos, no con los brazos. Siente los dorsales trabajar antes de ir a la máquina.',tiempo:'15 reps',highlight:true},
+          {nombre:'Remo con banda liviana',detalle:'Banda anclada al frente, jala hacia el abdomen. Escápulas juntas al final del movimiento. Esto activa romboides y trapecio medio.',tiempo:'12 reps',highlight:false},
+          {nombre:'Superman / extensión de espalda en suelo',detalle:'Boca abajo, levanta simultaneamente brazos y piernas del suelo. Mantén 2 segundos. Activa toda la cadena posterior sin carga.',tiempo:'10 reps',highlight:false},
+        ]
+      }
+    ],
+    limitaciones:{
+      espalda_baja:[
+        {tipo:'danger',texto:'🚫 ESPALDA BAJA: omite el Good Morning y cualquier ejercicio con bisagra de cadera bajo tensión. El Bird-Dog sí puedes hacerlo ya que es de bajo impacto.'},
+        {tipo:'warning',texto:'⚠️ Prioriza el Cat-Cow y la rotación torácica. Son ejercicios seguros que mejoran la movilidad sin comprometer la zona lumbar.'},
+      ],
+      hombro:[
+        {tipo:'warning',texto:'⚠️ HOMBRO SENSIBLE: en los jalones, usa agarre neutro (palmas enfrentadas) en lugar de agarre prono. Reduce el rango de movimiento si hay dolor al final.'},
+      ]
+    }
+  },
+  biceps_triceps:{
+    nombre:'Bíceps + Tríceps',
+    emoji:'💪',
+    duracion:'8-10 min',
+    descripcion:'El entrenamiento de brazos implica principalmente codos y muñecas. Estas articulaciones pequeñas necesitan calentamiento específico, especialmente si hay historial de dolor en el codo (epicondilitis).',
+    fases:[
+      {
+        titulo:'Activación cardiovascular',
+        subtitulo:'Elevar temperatura corporal',
+        icono:'🔥',
+        duracion:'2 min',
+        pasos:[
+          {nombre:'Trote suave',detalle:'2 minutos a ritmo bajo. Para días de brazos, el cardio puede ser más corto ya que el impacto sistémico del ejercicio es menor.',tiempo:'2 min',highlight:false},
+        ]
+      },
+      {
+        titulo:'Movilidad de codo y muñeca',
+        subtitulo:'Las articulaciones más trabajadas hoy',
+        icono:'🔄',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Círculos de muñeca',detalle:'Brazos extendidos al frente, haz círculos lentos con ambas muñecas simultáneamente, hacia adentro y hacia afuera. 30 seg en cada dirección.',tiempo:'60 seg',highlight:true},
+          {nombre:'Extensión y flexión de muñeca',detalle:'Con el brazo extendido, usa la mano opuesta para llevar la muñeca hacia arriba y hacia abajo suavemente. Estira el antebrazo completo.',tiempo:'30 seg/lado',highlight:false},
+          {nombre:'Círculos de codo (flexión-extensión)',detalle:'Flexiona y extiende el codo completamente, luego añade una pequeña rotación. Activa la articulación húmero-cubital que es la base de todo curl y extensión.',tiempo:'15 reps',highlight:false},
+          {nombre:'Aperturas de pecho con brazos extendidos',detalle:'Abre los brazos hacia los lados a la altura del pecho, con una leve flexión de codo. Activa el bíceps largo y el tendón del hombro.',tiempo:'10 reps',highlight:false},
+        ]
+      },
+      {
+        titulo:'Activación neuromuscular',
+        subtitulo:'Despertar los músculos objetivo',
+        icono:'⚡',
+        duracion:'3 min',
+        pasos:[
+          {nombre:'Curls con banda liviana o sin peso',detalle:'Movimiento completo de curl bicep, lento, sintiendo el músculo. NO te fatigues. El objetivo es que el cerebro recuerde el patrón motor.',tiempo:'15 reps',highlight:false},
+          {nombre:'Extensiones de tríceps con banda',detalle:'Banda anclada arriba, empuja hacia abajo completamente. Codo fijo, solo mueve el antebrazo.',tiempo:'15 reps',highlight:true},
+          {nombre:'Wall push-ups (para tríceps)',detalle:'Manos en la pared a ancho de hombros, inclínate y empuja. Activa tríceps sin carga alta. Ideal como puente antes de los ejercicios principales.',tiempo:'10 reps',highlight:false},
+        ]
+      }
+    ],
+    limitaciones:{
+      muneca:[
+        {tipo:'danger',texto:'🚫 MUÑECA SENSIBLE: usa barra EZ (curvada) en lugar de barra recta para curls. El agarre semipronado reduce la tensión en muñeca. Vendas elásticas son una buena opción.'},
+        {tipo:'warning',texto:'⚠️ Evita la extensión extrema de muñeca en los curl. Mantén la muñeca neutra o levemente flexionada durante todo el recorrido.'},
+      ],
+      codo:[
+        {tipo:'danger',texto:'🚫 CODO / EPICONDILITIS: reduce el volumen de curls con barra. Prefiere mancuernas con agarre neutro (palmas enfrentadas). Evita agarres en supinación completa si hay dolor en el tendón interno.'},
+        {tipo:'warning',texto:'⚠️ Antes de iniciar, haz el calentamiento de muñeca-codo por al menos 3 minutos extra. El tendón necesita más tiempo para estar listo.'},
+      ]
+    }
+  },
+  piernas:{
+    nombre:'Piernas completas',
+    emoji:'🦵',
+    duracion:'12-15 min',
+    descripcion:'El entrenamiento de piernas es el más demandante del cuerpo. Involucra caderas, rodillas, tobillos y toda la cadena posterior. Un buen calentamiento aquí puede marcar la diferencia entre un buen entreno y una lesión.',
+    fases:[
+      {
+        titulo:'Activación cardiovascular',
+        subtitulo:'Elevar temperatura corporal y activar cadena inferior',
+        icono:'🔥',
+        duracion:'5 min',
+        pasos:[
+          {nombre:'Bicicleta fija o trote suave',detalle:'5 minutos a ritmo moderado-bajo. La bicicleta es ideal porque activa cuádriceps, glúteos e isquios sin impacto. La alternativa es trote suave con pasos cortos.',tiempo:'5 min',highlight:true},
+        ]
+      },
+      {
+        titulo:'Movilidad de cadera, rodilla y tobillo',
+        subtitulo:'La triada crítica del tren inferior',
+        icono:'🔄',
+        duracion:'5 min',
+        pasos:[
+          {nombre:'Hip circles (círculos de cadera)',detalle:'De pie, manos en la cintura. Haz grandes círculos con la cadera, como si usaras un hula-hoop. 10 en cada dirección. Moviliza toda la articulación coxofemoral.',tiempo:'20 reps',highlight:true},
+          {nombre:'Sentadilla profunda con pausa (sin peso)',detalle:'Baja todo lo que puedas, pausa 5 segundos abajo, sube lento. Si no llegas a la profundidad completa, agárrate de algo. El objetivo es movilidad, no rendimiento.',tiempo:'10 reps',highlight:true},
+          {nombre:'Lunges laterales',detalle:'De pie, da un paso amplio hacia el lado y baja sobre esa pierna mientras la otra queda extendida. Alterna lados. Activa aductores y cadera lateral.',tiempo:'8 reps/lado',highlight:false},
+          {nombre:'Rotación de tobillo',detalle:'Apoya una mano en la pared, levanta un pie y haz círculos lentos con el tobillo. 10 en cada dirección, en cada pie. El tobillo rígido afecta toda la cadena de la sentadilla.',tiempo:'20 reps/pie',highlight:false},
+          {nombre:'Puente de glúteo (glute bridge)',detalle:'Boca arriba, rodillas dobladas, pies planos en el suelo. Sube las caderas apretando glúteos al máximo. Mantén 2 segundos arriba. Activa glúteos e isquios antes del trabajo pesado.',tiempo:'15 reps',highlight:true},
+        ]
+      },
+      {
+        titulo:'Activación progresiva',
+        subtitulo:'Preparar para el trabajo pesado',
+        icono:'⚡',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Sentadilla con peso corporal (rápida)',detalle:'Sentadillas a buen ritmo para elevar el calor local y activar el patrón motor. No es entrenamiento, es activación.',tiempo:'20 reps',highlight:false},
+          {nombre:'Peso muerto rumano sin peso o muy liviano',detalle:'Si el día incluye peso muerto, haz 2 series livianas con técnica perfecta. Activa la cadena posterior completa.',tiempo:'2 x 10 reps',highlight:false},
+          {nombre:'Series de entrada al ejercicio principal',detalle:'50% del peso de trabajo, 10 reps. Luego 70%, 5 reps. Luego a trabajar. No saltes al peso máximo sin pasar por estas series.',tiempo:'2 series de entrada',highlight:true},
+        ]
+      }
+    ],
+    limitaciones:{
+      rodilla:[
+        {tipo:'danger',texto:'🚫 RODILLA SENSIBLE: evita sentadillas profundas. Trabaja en el rango sin dolor (puede ser solo hasta 60-70° de flexión). Evita extensiones de cuádriceps pesadas.'},
+        {tipo:'warning',texto:'⚠️ Prioriza glute bridge, peso muerto rumano y leg press con poco rango. La cadera puede trabajar fuerte sin cargar la rodilla tanto.'},
+      ],
+      espalda_baja:[
+        {tipo:'danger',texto:'🚫 ESPALDA BAJA: evita peso muerto convencional y sentadilla con barra hasta resolver el problema. Leg press y hack squat son alternativas más seguras.'},
+        {tipo:'warning',texto:'⚠️ Refuerza el trabajo de glúteos y core en el calentamiento. Un glúteo débil sobrecarga la zona lumbar.'},
+      ],
+      tobillo:[
+        {tipo:'warning',texto:'⚠️ TOBILLO SENSIBLE: añade más tiempo de movilidad de tobillo. Los talones elevados en sentadilla (con disco bajo el talón) reducen la demanda de dorsiflexión.'},
+      ],
+      cadera:[
+        {tipo:'warning',texto:'⚠️ CADERA: aumenta la cantidad de hip circles y los lunges laterales en el calentamiento. Movilidad de cadera directamente afecta la profundidad y seguridad en sentadilla.'},
+      ]
+    }
+  },
+  full:{
+    nombre:'Full Body',
+    emoji:'🏋️',
+    duracion:'12-16 min',
+    descripcion:'Un entrenamiento de cuerpo completo exige que todas las articulaciones principales estén preparadas. El calentamiento debe ser más largo y completo que en sesiones específicas.',
+    fases:[
+      {
+        titulo:'Activación cardiovascular',
+        subtitulo:'Elevar temperatura general',
+        icono:'🔥',
+        duracion:'5 min',
+        pasos:[
+          {nombre:'Trote suave o salto de soga',detalle:'5 minutos a ritmo moderado. Para full body, el cardio de entrada debe ser más largo ya que hay más grupos musculares que preparar.',tiempo:'5 min',highlight:false},
+        ]
+      },
+      {
+        titulo:'Movilidad completa',
+        subtitulo:'Tren superior + inferior + columna',
+        icono:'🔄',
+        duracion:'6 min',
+        pasos:[
+          {nombre:'Círculos de brazos',detalle:'Hacia adelante y hacia atrás. Hombros, codos y muñecas en una sola secuencia fluida.',tiempo:'60 seg',highlight:false},
+          {nombre:'Cat-Cow',detalle:'Movilidad de columna completa. Esencial antes de cualquier trabajo de jalón o empuje.',tiempo:'10 reps',highlight:true},
+          {nombre:'Sentadilla profunda con pausa',detalle:'Sin peso, máxima profundidad posible. Activa toda la cadena inferior y movilidad de cadera.',tiempo:'10 reps',highlight:true},
+          {nombre:'Hip circles',detalle:'Círculos amplios de cadera, 10 en cada dirección.',tiempo:'20 reps',highlight:false},
+          {nombre:'World Greatest Stretch',detalle:'Desde posición de estocada, pon la mano del mismo lado que la pierna delantera en el suelo, luego rota hacia arriba con el brazo opuesto abriendo el pecho. Es el calentamiento más completo que existe.',tiempo:'5 reps/lado',highlight:true},
+        ]
+      },
+      {
+        titulo:'Activación progresiva',
+        subtitulo:'Despertar todos los músculos',
+        icono:'⚡',
+        duracion:'4 min',
+        pasos:[
+          {nombre:'Push-ups de rodilla',detalle:'Activa pecho, hombros y tríceps de forma integrada.',tiempo:'10 reps',highlight:false},
+          {nombre:'Jalones con banda liviana',detalle:'Activa dorsales y bíceps.',tiempo:'12 reps',highlight:false},
+          {nombre:'Sentadillas con peso corporal (20 reps)',detalle:'Activación final de piernas antes del trabajo real.',tiempo:'20 reps',highlight:false},
+        ]
+      }
+    ],
+    limitaciones:{
+      hombro:[{tipo:'warning',texto:'⚠️ HOMBRO: omite push-ups pesados. Usa variante de rodillas o eleva las manos en una superficie.'}],
+      espalda_baja:[{tipo:'danger',texto:'🚫 ESPALDA BAJA: evita sentadillas profundas y peso muerto. Prioriza leg press y variantes sentadas.'}],
+      rodilla:[{tipo:'warning',texto:'⚠️ RODILLA: limita el rango en sentadillas. Prefiere variantes como prensa o step-ups controlados.'}],
+      muneca:[{tipo:'warning',texto:'⚠️ MUÑECA: en push-ups usa puños cerrados sobre el suelo.'}]
+    }
+  }
+};
+
+const ELONGACION_DATA = {
+  pecho_hombro:{
+    nombre:'Pecho + Hombro',
+    grupos:[
+      {nombre:'Pecho',ejercicios:[
+        {nombre:'Estiramiento de pecho en marco de puerta',detalle:'Apoya el antebrazo en el marco de la puerta (codo a 90°). Rota el cuerpo hacia afuera hasta sentir el estiramiento en el pecho. Aguanta 40 segundos.',tiempo:'40 seg/lado'},
+        {nombre:'Apertura de pecho en el suelo',detalle:'Boca arriba, brazos en T, deja que la gravedad abra el pecho. Puedes poner una toalla enrollada bajo la columna torácica para aumentar el estiramiento.',tiempo:'60 seg'},
+      ]},
+      {nombre:'Hombro',ejercicios:[
+        {nombre:'Estiramiento de deltoides posterior (brazo cruzado)',detalle:'Trae un brazo hacia el pecho y usa el otro para presionar contra el cuerpo. Siente la parte trasera del hombro.',tiempo:'40 seg/lado'},
+        {nombre:'Rotación interna de hombro (detrás de la espalda)',detalle:'Lleva una mano detrás de la espalda hacia arriba (como rascarte la espalda). Ayuda con la otra mano si puedes. Con dolor de hombro, no fuerces.',tiempo:'30 seg/lado'},
+      ]},
+    ]
+  },
+  espalda:{
+    nombre:'Espalda',
+    grupos:[
+      {nombre:'Dorsal y trapecio',ejercicios:[
+        {nombre:'Estiramiento colgante en barra',detalle:'Cuélgate de una barra con agarre prono, deja que la gravedad elongue toda la columna y el dorsal. Si no tienes barra, inclínate sobre una mesa.',tiempo:'30-45 seg'},
+        {nombre:'Rotación de columna tumbado',detalle:'Boca arriba, lleva una rodilla al lado contrario del cuerpo. El hombro del mismo lado se queda pegado al suelo. Descomprime la columna lumbar y torácica.',tiempo:'45 seg/lado'},
+      ]},
+      {nombre:'Zona lumbar',ejercicios:[
+        {nombre:'Postura del niño (Child Pose)',detalle:'Arrodillado, lleva los glúteos hacia los talones y estira los brazos al frente en el suelo. El estiramiento más completo para la zona lumbar.',tiempo:'60 seg'},
+        {nombre:'Rodillas al pecho',detalle:'Boca arriba, abraza ambas rodillas contra el pecho. Balancea levemente de lado a lado.',tiempo:'40 seg'},
+      ]},
+    ]
+  },
+  biceps_triceps:{
+    nombre:'Bíceps + Tríceps',
+    grupos:[
+      {nombre:'Bíceps y antebrazo',ejercicios:[
+        {nombre:'Estiramiento de bíceps en pared',detalle:'Pon la palma abierta contra la pared (dedos hacia abajo), estira el brazo y rota el cuerpo levemente en sentido contrario.',tiempo:'40 seg/lado'},
+        {nombre:'Extensión de muñeca (estiramiento de antebrazo)',detalle:'Extiende el brazo, lleva la mano hacia abajo con la palma hacia afuera. Sientes el antebrazo y el bíceps.',tiempo:'30 seg/lado'},
+      ]},
+      {nombre:'Tríceps',ejercicios:[
+        {nombre:'Estiramiento de tríceps sobre la cabeza',detalle:'Lleva el codo hacia atrás de la cabeza, usa la mano opuesta para presionar el codo hacia abajo suavemente.',tiempo:'40 seg/lado'},
+      ]},
+    ]
+  },
+  piernas:{
+    nombre:'Piernas',
+    grupos:[
+      {nombre:'Cuádriceps',ejercicios:[
+        {nombre:'Estiramiento de cuádriceps de pie',detalle:'De pie, dobla una rodilla y agarra el pie por detrás. Mantén las rodillas juntas. Si pierdes equilibrio, apoya una mano en la pared.',tiempo:'40 seg/lado'},
+      ]},
+      {nombre:'Isquiotibiales',ejercicios:[
+        {nombre:'Estiramiento sentado de isquios',detalle:'Sentado en el suelo, piernas extendidas, inclínate hacia adelante desde la cadera (no la espalda) hasta sentir tensión en la parte posterior del muslo.',tiempo:'45 seg'},
+        {nombre:'Estiramiento de isquios en pared (supiné)',detalle:'Boca arriba cerca de una pared, eleva una pierna recta contra la pared. La otra queda en el suelo. Controla la tensión acercando o alejando la cadera.',tiempo:'45 seg/lado'},
+      ]},
+      {nombre:'Glúteos y cadera',ejercicios:[
+        {nombre:'Paloma (pigeon pose)',detalle:'Desde cuatro apoyos, lleva una rodilla al frente entre tus manos y extiende la pierna trasera. Es el estiramiento más completo para glúteo medio y piriforme.',tiempo:'60 seg/lado'},
+        {nombre:'Figura 4 (tumbado)',detalle:'Boca arriba, cruza el tobillo sobre la rodilla opuesta. Jala la pierna de abajo hacia el pecho. Sientes el glúteo de la pierna cruzada.',tiempo:'45 seg/lado'},
+      ]},
+      {nombre:'Pantorrillas',ejercicios:[
+        {nombre:'Estiramiento de gemelo en pared',detalle:'Apoya las manos en la pared, paso largo atrás con una pierna, talón pegado al suelo. Sientes la pantorrilla.',tiempo:'40 seg/lado'},
+      ]},
+    ]
+  },
+  full:{
+    nombre:'Full Body',
+    grupos:[
+      {nombre:'Tren superior',ejercicios:[
+        {nombre:'Apertura de pecho en puerta',detalle:'Antebrazo en marco, rota el cuerpo hacia afuera.',tiempo:'40 seg/lado'},
+        {nombre:'Estiramiento de tríceps',detalle:'Codo detrás de la cabeza, presiona con la mano opuesta.',tiempo:'40 seg/lado'},
+        {nombre:'Estiramiento colgante en barra',detalle:'Columna descomprimida, 30-45 segundos.',tiempo:'45 seg'},
+      ]},
+      {nombre:'Tren inferior',ejercicios:[
+        {nombre:'Paloma (pigeon pose)',detalle:'60 segundos por lado. El más completo para glúteo.',tiempo:'60 seg/lado'},
+        {nombre:'Sentado estiramiento de isquios',detalle:'Desde la cadera, no desde la espalda.',tiempo:'45 seg'},
+        {nombre:'Gemelo en pared',detalle:'Talón pegado al suelo, rodilla recta.',tiempo:'40 seg/lado'},
+      ]},
+      {nombre:'Columna',ejercicios:[
+        {nombre:'Child Pose',detalle:'Glúteos hacia talones, brazos extendidos al frente.',tiempo:'60 seg'},
+        {nombre:'Rotación de columna tumbado',detalle:'Una rodilla al lado contrario, hombro pegado al suelo.',tiempo:'45 seg/lado'},
+      ]},
+    ]
+  }
+};
+
+const LESION_DATA = [
+  {
+    zona:'🔴 Hombro',
+    tipo:'danger',
+    condicion:'Impingement, tendinitis del manguito rotador, dolor subacromial',
+    hacer:[
+      'Rotación externa con banda liviana (3x15)',
+      'Face pulls con banda liviana — esencial para activar rotadores externos',
+      'Círculos pequeños de hombro con brazo caído',
+      'Estiramiento del deltoides posterior (brazo cruzado)',
+      'Decúbito prono con rotación externa (codo a 90° en el suelo)'
+    ],
+    evitar:[
+      'Press militar o cualquier trabajo por encima de la cabeza con dolor',
+      'Elevaciones laterales pesadas en la fase aguda',
+      'Dislocaciones si hay dolor en el rango final',
+      'Ejercicios con el brazo por detrás del cuerpo en posición forzada'
+    ],
+    consejo:'El hombro dolor casi siempre tiene debilidad de rotadores externos como causa. Trabaja eso antes de volver al press pesado. Si el dolor es agudo o repentino, consulta con un kinesiólogo.'
+  },
+  {
+    zona:'🔴 Muñeca',
+    tipo:'danger',
+    condicion:'Tendinitis, síndrome del túnel carpiano, dolor en flexión/extensión',
+    hacer:[
+      'Círculos de muñeca lentos (2 min antes del entrenamiento)',
+      'Extensión y flexión suave con ayuda de la mano opuesta',
+      'Vendas elásticas o muñequeras para trabajo pesado',
+      'Preferir agarre neutro (palmas enfrentadas) en ejercicios',
+      'Barra EZ en lugar de barra recta para curls'
+    ],
+    evitar:[
+      'Extensión extrema de muñeca (como en push-ups con las manos abiertas si duele)',
+      'Agarres en supinación completa si hay dolor en cara interna',
+      'Peso elevado con muñeca en posición comprometida'
+    ],
+    consejo:'Para push-ups con muñeca sensible, cierra el puño y apóyate sobre los nudillos. Esto mantiene la muñeca neutra. Considera ver a un médico si el dolor incluye hormigueo o adormecimiento.'
+  },
+  {
+    zona:'🔴 Espalda baja',
+    tipo:'danger',
+    condicion:'Lumbalgia, contractura, hernia discal, dolor crónico',
+    hacer:[
+      'Cat-Cow: el ejercicio más seguro y efectivo para la zona lumbar',
+      'Bird-Dog: estabilización sin carga',
+      'Glute bridge: fortalecer glúteos descarga la lumbar',
+      'Postura del niño (Child Pose) post-entrenamiento',
+      'Rotación de columna tumbado'
+    ],
+    evitar:[
+      'Peso muerto convencional con dolor agudo',
+      'Buenos días (good morning) con carga',
+      'Sentadilla con barra si el dolor es lumbar y no has calentado bien',
+      'Hiperextensiones de espalda pesadas en fase aguda'
+    ],
+    consejo:'La espalda baja raramente es el problema principal: casi siempre hay debilidad en glúteos o rigidez en cadera que transfiere la carga a la lumbar. Trabaja movilidad de cadera + fuerza de glúteos consistentemente.'
+  },
+  {
+    zona:'🔴 Rodilla',
+    tipo:'danger',
+    condicion:'Condromalacia, tendinitis rotuliana, dolor anterior de rodilla',
+    hacer:[
+      'Glute bridge y variantes (activa glúteos que estabilizan la rodilla)',
+      'Terminal knee extension con banda (activa cuádriceps terminal)',
+      'Sentadilla con rango reducido (sin dolor)',
+      'Bicicleta fija como cardio (bajo impacto articular)',
+      'Rotación de tobillo (la rigidez de tobillo sobrecarga rodilla)'
+    ],
+    evitar:[
+      'Sentadillas profundas con dolor anterior',
+      'Extensiones de cuádriceps con mucho peso',
+      'Ejercicios de alto impacto (saltos, sprints) en fase aguda',
+      'Escaladora si reproduce el dolor'
+    ],
+    consejo:'El dolor de rodilla anterior casi siempre responde bien a fortalecer glúteo medio y cuádriceps terminal. No dejes de entrenar, adapta. Un fisioterapeuta puede darte un plan específico de rehabilitación activa.'
+  }
+];
+
+const FAQ_DATA = [
+  {q:'¿Cuánto tiempo mínimo necesito para calentar?',a:'El mínimo real para no comprometer la seguridad es 8-10 minutos para grupos musculares pequeños (brazos) y 12-15 minutos para grupos grandes (piernas, espalda). Menos de eso, especialmente si el gimnasio está frío o es de mañana, aumenta el riesgo de lesión.',tag:'base'},
+  {q:'¿El stretching estático antes de entrenar ayuda o perjudica?',a:'El stretching estático (sostener 30-60 seg) ANTES de entrenar puede reducir la fuerza muscular temporalmente si se hace justo antes del primer set. Lo correcto es hacer movilidad dinámica antes del entrenamiento y guardar el stretching estático para DESPUÉS. Esta web está diseñada con esa lógica.',tag:'base'},
+  {q:'¿Por qué me duele el hombro cuando hago press?',a:'El dolor en press de pecho o hombro casi siempre se origina en una combinación de: 1) rotadores externos débiles, 2) rigidez de la cápsula posterior del hombro, 3) escápula sin control. Hacer face pulls, rotación externa con banda y mejorar la postura de escápula antes del press suele reducir significativamente el dolor en 2-4 semanas.',tag:'lesion'},
+  {q:'¿Tengo hernia lumbar, puedo seguir entrenando?',a:'Sí, en la mayoría de los casos. El reposo absoluto no es la solución; el movimiento controlado es parte del tratamiento. Debes evitar peso muerto convencional y sentadilla pesada en fase aguda. Ejercicios como glute bridge, bird-dog, y trabajo de core profundo son seguros y beneficiosos. Siempre bajo supervisión médica.',tag:'lesion'},
+  {q:'¿Cuántas series de entrada necesito antes del trabajo pesado?',a:'Depende del peso objetivo. Una buena regla: 50% x 10 reps, 70% x 5 reps, 85% x 2-3 reps, luego el peso de trabajo. Si el primer set de trabajo está por encima del 85% de tu máximo, añade una serie más al 90% x 1 rep. Nunca saltes al peso máximo sin progresión de entrada.',tag:'base'},
+  {q:'¿El calentamiento me hace perder músculo o energía para entrenar?',a:'Un calentamiento bien hecho no solo NO quita rendimiento, sino que lo mejora. El músculo caliente genera más fuerza, tiene mejor coordinación neuromuscular y menos riesgo de desgarros. Lo que SÍ puede quitarte energía es un calentamiento excesivamente largo o cardiovascular muy intenso antes de trabajo de fuerza.',tag:'base'},
+  {q:'¿Tengo dolor de codo (epicondilitis), qué hago en día de brazos?',a:'La epicondilitis lateral (codo de tenista) se agrava con extensión de muñeca y agarre en pronación. La medial (codo de golfista) con flexión de muñeca. Para brazos: usa mancuernas con agarre neutro, reduce el volumen, evita la barra recta. Calentar 5 minutos extra la zona del codo antes de empezar. Si el dolor persiste más de 3 semanas, ve al médico.',tag:'lesion'},
+  {q:'¿Cuánto tiempo de elongación necesito post-entrenamiento?',a:'Con 10-15 minutos bien utilizados es suficiente. Prioriza los grupos musculares que más trabajaste. Los músculos están calientes y receptivos justo después del entreno, que es el momento ideal. Sostén cada posición 30-45 segundos sin rebotar. Los rebotes activan el reflejo de estiramiento y reducen el beneficio.',tag:'base'},
+  {q:'¿Por qué me lesiono siempre la espalda baja haciendo piernas?',a:'Las causas más comunes: 1) glúteos débiles que transfieren la carga a la lumbar, 2) cadera rígida que fuerza la compensación lumbar, 3) espalda baja que lleva el trabajo que debería ir a las piernas (hiperlordosis en sentadilla). La solución no es dejar de hacer piernas, sino trabajar movilidad de cadera, fortalecer glúteos y revisar la técnica de sentadilla.',tag:'lesion'},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let limitacionesActivas = new Set();
+let timerInterval = null;
+let timerRunning = false;
+let timerQueue = [];
+let timerIndex = 0;
+let timerSeconds = 0;
+let timerTotal = 0;
+let currentMusculo = 'pecho_hombro';
+
+// ═══════════════════════════════════════════════════════════════
+// LIMITACIONES TOGGLE
+// ═══════════════════════════════════════════════════════════════
+function toggleLimitacion(btn, val){
+  if(val === 'ninguna'){
+    limitacionesActivas.clear();
+    document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    limitacionesActivas.add('ninguna');
+  } else {
+    const ninguna = document.querySelector('.chip-btn[onclick*="ninguna"]');
+    ninguna.classList.remove('active');
+    limitacionesActivas.delete('ninguna');
+    if(limitacionesActivas.has(val)){
+      limitacionesActivas.delete(val);
+      btn.classList.remove('active');
+    } else {
+      limitacionesActivas.add(val);
+      btn.classList.add('active');
+    }
+  }
+  buildWarmup();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD WARMUP
+// ═══════════════════════════════════════════════════════════════
+function buildWarmup(){
+  currentMusculo = document.getElementById('sel-musculo').value;
+  const nivel = document.getElementById('sel-nivel').value;
+  const data = WARMUP_DATA[currentMusculo];
+
+  // Recolectar advertencias de lesiones
+  let alertas = [];
+  limitacionesActivas.forEach(lim => {
+    if(lim === 'ninguna') return;
+    if(data.limitaciones[lim]){
+      alertas = alertas.concat(data.limitaciones[lim]);
+    }
+  });
+
+  let html = '';
+
+  // Card principal
+  html += `<div class="result-card">
+    <div class="result-top">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--gold-glow);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${data.emoji}</div>
+        <div style="flex:1">
+          <div class="result-name">${data.nombre}</div>
+          <div class="result-sub">${data.duracion} · ${nivel === 'principiante' ? 'Nivel principiante' : nivel === 'intermedio' ? 'Nivel intermedio' : 'Nivel avanzado'}</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="badge badge-green">✓ Protocolo listo</span>
+        ${limitacionesActivas.size > 0 && !limitacionesActivas.has('ninguna') ? `<span class="badge badge-amber" style="margin-left:6px">⚠ ${limitacionesActivas.size} adaptación${limitacionesActivas.size > 1 ? 'es' : ''}</span>` : ''}
+      </div>
+    </div>`;
+
+  // Descripción
+  html += `<div style="padding:16px;background:var(--ink2);border-bottom:1px solid var(--gold-line);font-size:13px;color:var(--text2);line-height:1.6">${data.descripcion}</div>`;
+
+  // Alertas de lesiones
+  if(alertas.length > 0){
+    html += `<div style="padding:16px;background:var(--ink2);border-bottom:1px solid var(--gold-line)">`;
+    alertas.forEach(a => {
+      const isCritical = a.tipo === 'danger';
+      html += `<div class="alert-box${isCritical ? '' : ' alert-box-amber'}" style="margin-bottom:8px">
+        <div class="alert-title ${isCritical ? 'red' : 'amber'}">${isCritical ? '⛔ Alerta importante' : '⚠ Adaptación necesaria'}</div>
+        <div class="alert-body">${a.texto}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Fases
+  html += `<div style="padding:16px;background:var(--ink2)">`;
+  data.fases.forEach((fase, fi) => {
+    html += `<div class="phase-section">
+      <div class="phase-header">
+        <div class="phase-icon">${fase.icono}</div>
+        <div>
+          <div class="phase-title">${fase.titulo}</div>
+          <div class="phase-sub">${fase.subtitulo} · ${fase.duracion}</div>
+        </div>
+      </div>
+      <div class="step-list">`;
+
+    fase.pasos.forEach((paso, pi) => {
+      // Si nivel principiante, añadir nota extra
+      const esNovato = nivel === 'principiante';
+      html += `<div class="step-item${paso.highlight ? ' highlight' : ''}">
+        <div class="step-num">${fi+1}.${pi+1}</div>
+        <div class="step-content">
+          <div class="step-name">${paso.nombre}</div>
+          <div class="step-detail">${paso.detalle}${esNovato && paso.highlight ? ' <strong style="color:var(--gold)">★ Prioritario para principiantes</strong>' : ''}</div>
+          <div class="step-time">${paso.tiempo}</div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+    if(fi < data.fases.length - 1) html += `<div class="section-divider"></div>`;
+  });
+  html += `</div>`;
+
+  // Tip final
+  const tips = {
+    principiante: '💡 <strong>Para principiantes:</strong> No saltes ningún paso. Tu sistema nervioso y tus articulaciones necesitan más tiempo para adaptarse. Puede parecer mucho, pero en pocas semanas lo harás en piloto automático.',
+    intermedio: '💡 <strong>Para nivel intermedio:</strong> Si el tiempo apremia, puedes acortar el cardio inicial a 2 minutos, pero nunca omitas la movilidad articular y las series de entrada.',
+    avanzado: '💡 <strong>Para nivel avanzado:</strong> Ajusta la cantidad de series de entrada según cómo te sientas ese día. Un día con poco descanso necesita más calentamiento, no menos.'
+  };
+  html += `<div class="tip-block"><div class="tip-inner">${tips[nivel]}</div></div>`;
+
+  html += `</div>`; // cierre result-card
+
+  // Nota sobre timer
+  html += `<div class="info-banner">
+    <strong>Temporizador disponible:</strong> Ve a la pestaña <span style="color:var(--gold)">Temporizador</span> para seguir el calentamiento con cronómetro guiado. Los ejercicios se cargan automáticamente con tu selección.
+  </div>`;
+
+  document.getElementById('result-warmup').innerHTML = html;
+
+  // Actualizar también timer y elongación
+  buildTimer();
+  buildElongacion();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TIMER
+// ═══════════════════════════════════════════════════════════════
+function buildTimerQueue(){
+  const data = WARMUP_DATA[currentMusculo];
+  timerQueue = [];
+  data.fases.forEach(fase => {
+    fase.pasos.forEach(paso => {
+      // Parsear tiempo a segundos aproximados
+      let secs = 30;
+      const t = paso.tiempo.toLowerCase();
+      if(t.includes('min')){
+        const m = parseFloat(t);
+        secs = Math.round(m * 60);
+      } else if(t.includes('seg')){
+        const s = parseInt(t);
+        secs = isNaN(s) ? 40 : s;
+      } else if(t.includes('reps') || t.includes('rep')){
+        secs = 40; // estimado para series de reps
+      }
+      timerQueue.push({nombre: paso.nombre, tiempo: secs, fase: fase.titulo});
+    });
+  });
+}
+
+function buildTimer(){
+  buildTimerQueue();
+  timerIndex = 0;
+  timerRunning = false;
+  clearInterval(timerInterval);
+  renderTimer();
+}
+
+function renderTimer(){
+  if(timerQueue.length === 0) return;
+  const step = timerQueue[timerIndex];
+  const t = timerIndex === 0 && !timerRunning ? step.tiempo : timerSeconds;
+  document.getElementById('timer-phase-label').textContent = step.fase;
+  document.getElementById('timer-step-name').textContent = step.nombre;
+  document.getElementById('timer-display').textContent = formatTime(timerRunning || timerIndex > 0 ? timerSeconds : step.tiempo);
+  if(!timerRunning && timerSeconds === 0){
+    document.getElementById('timer-display').textContent = formatTime(step.tiempo);
+    timerSeconds = step.tiempo;
+  }
+  const pct = (timerSeconds / step.tiempo) * 100;
+  document.getElementById('timer-progress-fill').style.width = Math.max(0, pct) + '%';
+  document.getElementById('btn-start').textContent = timerRunning ? '⏸ Pausar' : '▶ Iniciar';
+  renderTimerQueue();
+}
+
+function renderTimerQueue(){
+  let html = '';
+  timerQueue.forEach((item, i) => {
+    const cls = i === timerIndex ? 'current' : i < timerIndex ? 'done' : '';
+    html += `<div class="timer-queue-item${cls ? ' '+cls : ''}">
+      <div class="tqi-dot${cls ? ' '+cls : ''}"></div>
+      <span class="tqi-name${cls === 'current' ? ' current' : ''}">${item.nombre}</span>
+      <span class="tqi-time${cls === 'current' ? ' current' : ''}">${formatTime(item.tiempo)}</span>
+    </div>`;
+  });
+  document.getElementById('timer-queue').innerHTML = html;
+}
+
+function formatTime(secs){
+  const m = Math.floor(secs/60);
+  const s = secs % 60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function timerToggle(){
+  if(timerQueue.length === 0) return;
+  if(timerRunning){
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('btn-start').textContent = '▶ Iniciar';
+  } else {
+    timerRunning = true;
+    document.getElementById('btn-start').textContent = '⏸ Pausar';
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      if(timerSeconds <= 0){
+        timerSeconds = 0;
+        clearInterval(timerInterval);
+        timerRunning = false;
+        // Auto advance
+        if(timerIndex < timerQueue.length - 1){
+          setTimeout(() => {
+            timerIndex++;
+            timerSeconds = timerQueue[timerIndex].tiempo;
+            renderTimer();
+            timerToggle(); // auto-start next
+          }, 800);
+        } else {
+          document.getElementById('timer-step-name').textContent = '¡Calentamiento completo! 🎉';
+          document.getElementById('btn-start').textContent = '▶ Iniciar';
+        }
+      }
+      renderTimer();
+    }, 1000);
+  }
+}
+
+function timerNext(){
+  if(timerIndex < timerQueue.length - 1){
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerIndex++;
+    timerSeconds = timerQueue[timerIndex].tiempo;
+    renderTimer();
+  }
+}
+
+function timerPrev(){
+  if(timerIndex > 0){
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerIndex--;
+    timerSeconds = timerQueue[timerIndex].tiempo;
+    renderTimer();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ELONGACIÓN
+// ═══════════════════════════════════════════════════════════════
+function buildElongacion(){
+  const data = ELONGACION_DATA[currentMusculo];
+  let html = `<div class="result-card" style="margin-bottom:14px">
+    <div class="result-top">
+      <div class="result-name">Elongación — ${data.nombre}</div>
+      <div class="result-sub" style="margin-top:6px">Realizar post-entrenamiento · 10-15 min</div>
+      <div style="margin-top:10px"><span class="badge badge-blue">Post-entrenamiento</span></div>
+    </div>`;
+
+  data.grupos.forEach((grupo, gi) => {
+    html += `<div style="padding:14px 16px;${gi > 0 ? 'border-top:1px solid var(--gold-line)' : ''}">
+      <div class="section-label" style="margin-bottom:10px">${grupo.nombre}</div>
+      <div class="step-list">`;
+    grupo.ejercicios.forEach((ej, ei) => {
+      html += `<div class="step-item">
+        <div class="step-num alt">${gi+1}.${ei+1}</div>
+        <div class="step-content">
+          <div class="step-name">${ej.nombre}</div>
+          <div class="step-detail">${ej.detalle}</div>
+          <div class="step-time green">${ej.tiempo}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `<div class="tip-block"><div class="tip-inner"><strong>Recuerda:</strong> Los músculos están calientes y receptivos justo después del entrenamiento. Sin rebotes, sin forzar el dolor. Respira profundo en cada posición.</div></div>`;
+  html += `</div>`;
+
+  html += `<div class="info-banner">
+    <strong>¿Cuándo NO elongar?</strong> Si tienes un desgarro o lesión aguda, el estiramiento en esa zona puede empeorar la situación. Espera a que el dolor agudo ceda antes de volver a elongar esa zona.
+  </div>`;
+
+  document.getElementById('elon-content').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LESIONES
+// ═══════════════════════════════════════════════════════════════
+function buildLesiones(){
+  let html = '';
+  LESION_DATA.forEach((l, i) => {
+    html += `<div style="border:1px solid var(--ink4);border-radius:14px;overflow:hidden;margin-bottom:12px;">
+      <div style="padding:14px 16px;background:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:space-between" onclick="toggleLesion(${i},this)">
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--text)">${l.zona}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${l.condicion}</div>
+        </div>
+        <span style="color:var(--gold);font-size:18px;transition:transform 0.2s" id="les-arrow-${i}">⌄</span>
+      </div>
+      <div id="les-body-${i}" style="display:none;padding:16px;background:var(--ink)">
+        <div style="margin-bottom:12px">
+          <div class="section-label" style="color:var(--green);margin-bottom:8px">✓ Qué hacer / incluir</div>
+          <div class="step-list">
+            ${l.hacer.map(h => `<div class="step-item"><div class="step-num" style="color:var(--green);background:var(--green-bg)">OK</div><div class="step-detail" style="font-size:12.5px;color:var(--text2)">${h}</div></div>`).join('')}
+          </div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div class="section-label" style="color:var(--red);margin-bottom:8px">✗ Qué evitar</div>
+          <div class="step-list">
+            ${l.evitar.map(e => `<div class="step-item danger"><div class="step-num" style="color:var(--red);background:var(--red-bg)">NO</div><div class="step-detail" style="font-size:12.5px;color:var(--text2)">${e}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="tip-block" style="padding:0"><div class="tip-inner"><strong>Consejo SLAB:</strong> ${l.consejo}</div></div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('lesion-cards').innerHTML = html;
+}
+
+function toggleLesion(i, header){
+  const body = document.getElementById('les-body-'+i);
+  const arrow = document.getElementById('les-arrow-'+i);
+  const isOpen = body.style.display === 'block';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FAQ
+// ═══════════════════════════════════════════════════════════════
+function buildFaq(){
+  let html = '';
+  FAQ_DATA.forEach((f, i) => {
+    const isLesion = f.tag === 'lesion';
+    html += `<div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(${i},this)">
+        <span class="faq-q-text">${f.q}</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a" id="faq-a-${i}">
+        <span class="faq-tag ${isLesion ? 'lesion' : 'base'}">${isLesion ? '🔴 Lesión' : '⭐ Base'}</span>
+        <br>${f.a}
+      </div>
+    </div>`;
+  });
+  document.getElementById('faq-list').innerHTML = html;
+}
+
+function toggleFaq(i, row){
+  const a = document.getElementById('faq-a-'+i);
+  const icon = row.querySelector('.faq-icon');
+  a.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════════
+function switchTab(id, btn){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(btn && btn.classList) {
+    btn.classList.add('active');
+    btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function goToSelector(){
+  const btn = document.querySelector('.nav-tab');
+  switchTab('selector', btn);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+buildWarmup();
+buildLesiones();
+buildFaq();
+</script>
+</body>
+</html>
